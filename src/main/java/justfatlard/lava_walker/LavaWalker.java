@@ -1,7 +1,7 @@
 package justfatlard.lava_walker;
 
+import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.FluidBlock;
@@ -24,6 +24,10 @@ public class LavaWalker implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		// Register mod assets (lang files) with Polymer for vanilla clients
+		PolymerResourcePackUtils.addModAssets(MOD_ID);
+		PolymerResourcePackUtils.markAsRequired();
+
 		System.out.println("[lava-walker] Lava Walker enchantment loaded");
 	}
 
