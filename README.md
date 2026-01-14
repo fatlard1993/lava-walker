@@ -13,6 +13,10 @@ A Fabric mod for Minecraft 1.21.11 that adds the **Lava Walker** enchantment.
 - Treasure enchantment (found in loot, not enchanting table)
 - Mutually exclusive with Frost Walker and Depth Strider
 
+## Screenshot
+
+![Lava Walker](img.png)
+
 ## Requirements
 
 - Minecraft 1.21.11
