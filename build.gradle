@@ -1,6 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.13-SNAPSHOT'
-	id 'maven-publish'
+	id 'fabric-loom' version '1.13.6'
 }
 
 version = project.mod_version
@@ -10,8 +9,6 @@ repositories {
 	maven { url 'https://maven.nucleoid.xyz' }
 }
 
-loom {}
-
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
@@ -19,8 +16,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Polymer for server-side resource pack hosting (translations)
-	modImplementation include("eu.pb4:polymer-resource-pack:0.15.1+1.21.11")
-	modImplementation include("eu.pb4:polymer-autohost:0.15.1+1.21.11")
+	modImplementation include("eu.pb4:polymer-resource-pack:${project.polymer_version}")
+	modImplementation include("eu.pb4:polymer-autohost:${project.polymer_version}")
 }
 
 processResources {
@@ -45,21 +42,11 @@ java {
 	if (JavaVersion.current() < javaVersion) {
 		toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
 	}
-	archivesBaseName = project.archives_base_name
 	withSourcesJar()
 }
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.archives_base_name}"}
 	}
-}
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-	repositories {}
 }

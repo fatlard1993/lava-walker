@@ -1,6 +1,7 @@
 package justfatlard.lava_walker.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,6 +19,9 @@ import justfatlard.lava_walker.LavaWalker;
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
+	@Unique
+	private BlockPos lavaWalker$lastPos;
+
 	@Inject(method = "tickMovement", at = @At("TAIL"))
 	private void onTickMovement(CallbackInfo ci) {
 		LivingEntity self = (LivingEntity)(Object)this;
@@ -29,8 +33,8 @@ public class LivingEntityMixin {
 		ItemStack boots = self.getEquippedStack(EquipmentSlot.FEET);
 
 		if (boots.isEmpty()) return;
+		if (pos.equals(lavaWalker$lastPos)) return;
 
-		// Get the enchantment from registry
 		var enchantmentRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
 		var lavaWalkerOpt = enchantmentRegistry.getOptional(LavaWalker.LAVA_WALKER);
 
@@ -39,7 +43,8 @@ public class LivingEntityMixin {
 		int level = EnchantmentHelper.getLevel(lavaWalkerOpt.get(), boots);
 
 		if (level > 0) {
-			LavaWalker.solidifyLava(self, world, pos, level);
+			lavaWalker$lastPos = pos.toImmutable();
+			LavaWalker.solidifyLava(self, world, pos);
 		}
 	}
 }
