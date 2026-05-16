@@ -6,13 +6,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 
 import justfatlard.lava_walker.LavaWalker;
 
@@ -22,28 +22,28 @@ public class LivingEntityMixin {
 	@Unique
 	private BlockPos lavaWalker$lastPos;
 
-	@Inject(method = "tickMovement", at = @At("TAIL"))
+	@Inject(method = "aiStep", at = @At("TAIL"))
 	private void onTickMovement(CallbackInfo ci) {
 		LivingEntity self = (LivingEntity)(Object)this;
-		World world = self.getEntityWorld();
+		Level world = self.level();
 
-		if (world.isClient()) return;
+		if (world.isClientSide()) return;
 
-		BlockPos pos = self.getBlockPos();
-		ItemStack boots = self.getEquippedStack(EquipmentSlot.FEET);
+		BlockPos pos = self.blockPosition();
+		ItemStack boots = self.getItemBySlot(EquipmentSlot.FEET);
 
 		if (boots.isEmpty()) return;
 		if (pos.equals(lavaWalker$lastPos)) return;
 
-		var enchantmentRegistry = world.getRegistryManager().getOrThrow(RegistryKeys.ENCHANTMENT);
-		var lavaWalkerOpt = enchantmentRegistry.getOptional(LavaWalker.LAVA_WALKER);
+		var enchantmentRegistry = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
+		var lavaWalkerOpt = enchantmentRegistry.get(LavaWalker.LAVA_WALKER);
 
 		if (lavaWalkerOpt.isEmpty()) return;
 
-		int level = EnchantmentHelper.getLevel(lavaWalkerOpt.get(), boots);
+		int level = EnchantmentHelper.getItemEnchantmentLevel(lavaWalkerOpt.get(), boots);
 
 		if (level > 0) {
-			lavaWalker$lastPos = pos.toImmutable();
+			lavaWalker$lastPos = pos.immutable();
 			LavaWalker.solidifyLava(self, world, pos);
 		}
 	}

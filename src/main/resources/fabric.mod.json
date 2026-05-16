@@ -12,16 +12,15 @@
 	},
 	"license": "MIT",
 	"icon": "assets/lava-walker/icon.png",
-	"environment": "server",
+	"environment": "*",
 	"entrypoints": {
 		"main": ["justfatlard.lava_walker.LavaWalker"]
 	},
 	"mixins": ["lava-walker.mixins.json"],
 	"depends": {
 		"fabricloader": ">=0.18.1",
-		"minecraft": "~1.21.11",
-		"java": ">=21",
-		"fabric-api": ">=0.140.0",
-		"polymer-autohost": ">=0.15.1"
+		"minecraft": ">=26.1",
+		"java": ">=25",
+		"fabric-api": "*"
 	}
 }

@@ -1,19 +1,20 @@
 package justfatlard.lava_walker;
 
-import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
+import justfatlard.pandorical.api.PandoricalApi;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,13 +22,15 @@ public class LavaWalker implements ModInitializer {
 	public static final String MOD_ID = "lava-walker";
 	private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final RegistryKey<net.minecraft.enchantment.Enchantment> LAVA_WALKER =
-		RegistryKey.of(RegistryKeys.ENCHANTMENT, Identifier.of(MOD_ID, "lava_walker"));
+	public static final ResourceKey<Enchantment> LAVA_WALKER =
+		ResourceKey.create(Registries.ENCHANTMENT, Identifier.fromNamespaceAndPath(MOD_ID, "lava_walker"));
 
 	@Override
 	public void onInitialize() {
-		PolymerResourcePackUtils.addModAssets(MOD_ID);
-		PolymerResourcePackUtils.markAsRequired();
+		// Register with Pandorical if available
+		if (PandoricalApi.isAvailable()) {
+			PandoricalApi.content().registerModAssets(MOD_ID);
+		}
 
 		LOGGER.info("Lava Walker enchantment loaded");
 	}
@@ -35,16 +38,16 @@ public class LavaWalker implements ModInitializer {
 	/**
 	 * Solidifies lava source blocks around the entity into cobblestone.
 	 */
-	public static void solidifyLava(LivingEntity entity, World world, BlockPos pos) {
-		if (!entity.isOnGround()) return;
+	public static void solidifyLava(LivingEntity entity, Level world, BlockPos pos) {
+		if (!entity.onGround()) return;
 
-		BlockState cobblestone = Blocks.COBBLESTONE.getDefaultState();
+		BlockState cobblestone = Blocks.COBBLESTONE.defaultBlockState();
 		int radius = 2;
 
-		BlockPos.Mutable mutablePos = new BlockPos.Mutable();
+		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-		for (BlockPos blockPos : BlockPos.iterate(pos.add(-radius, -1, -radius), pos.add(radius, -1, radius))) {
-			if (blockPos.isWithinDistance(entity.getEntityPos(), radius)) {
+		for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(-radius, -1, -radius), pos.offset(radius, -1, radius))) {
+			if (blockPos.closerToCenterThan(entity.position(), radius)) {
 				mutablePos.set(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ());
 
 				BlockState stateAbove = world.getBlockState(mutablePos);
@@ -54,13 +57,13 @@ public class LavaWalker implements ModInitializer {
 				BlockState state = world.getBlockState(blockPos);
 				FluidState fluidState = world.getFluidState(blockPos);
 
-				if (fluidState.getFluid() == Fluids.LAVA &&
-					state.getBlock() instanceof FluidBlock &&
-					fluidState.isStill() &&
-					cobblestone.canPlaceAt(world, blockPos) &&
-					world.canPlace(cobblestone, blockPos, ShapeContext.absent())) {
+				if (fluidState.getType() == Fluids.LAVA &&
+					state.getBlock() instanceof LiquidBlock &&
+					fluidState.isSource() &&
+					cobblestone.canSurvive(world, blockPos) &&
+					world.isUnobstructed(cobblestone, blockPos, CollisionContext.empty())) {
 
-					world.setBlockState(blockPos, cobblestone);
+					world.setBlock(blockPos, cobblestone, 3);
 				}
 			}
 		}
