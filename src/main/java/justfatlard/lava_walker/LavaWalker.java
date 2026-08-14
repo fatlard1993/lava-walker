@@ -27,7 +27,6 @@ public class LavaWalker implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// Register with Pandorical if available
 		if (PandoricalApi.isAvailable()) {
 			PandoricalApi.content().registerModAssets(MOD_ID);
 		}
