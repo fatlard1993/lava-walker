@@ -24,15 +24,13 @@ A Fabric mod that adds the **Lava Walker** enchantment.
 
 ## Pandorical
 
-Lava Walker requires the Pandorical mod on the server: it registers its own assets (translations and related resources) through Pandorical's content sync so Pandorical-enabled clients see them correctly, and the mod won't load without it. The enchantment mechanic itself doesn't depend on any Pandorical-specific feature beyond that asset sync.
+Lava Walker runs server-side, and Pandorical is a hard dependency (`fabric.mod.json`): the server will not load this mod without it. It syncs the enchantment's translations through Pandorical's content sync, and that is the whole of its Pandorical usage.
+
+Clients are the optional half, and the stake is only the name. A player on a Pandorical client sees "Lava Walker"; a player on a vanilla client sees the raw translation key. The enchantment works identically either way.
 
 ## Installation
 
-**Server-side only** - clients don't need this mod installed to be affected by the enchantment.
-
-1. Install [Fabric Loader](https://fabricmc.net/use/) on your server
-2. Install [Fabric API](https://modrinth.com/mod/fabric-api)
-3. Drop the Lava Walker jar into your server's `mods` folder
+Install server-side alongside its declared dependencies (see `fabric.mod.json`), Pandorical included. No client needs the Lava Walker jar.
 
 ## License
 
