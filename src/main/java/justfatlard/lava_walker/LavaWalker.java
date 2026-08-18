@@ -27,6 +27,11 @@ public class LavaWalker implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		// Guarded class load: BookOfferDialogue names village-quests types.
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("village-quests-justfatlard")) {
+			justfatlard.lava_walker.integration.BookOfferDialogue.register();
+		}
+
 		if (PandoricalApi.isAvailable()) {
 			PandoricalApi.content().registerModAssets(MOD_ID);
 		}
