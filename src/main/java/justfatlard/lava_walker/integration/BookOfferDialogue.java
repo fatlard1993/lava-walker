@@ -45,19 +45,26 @@ public final class BookOfferDialogue {
 				Component.literal("Do you have anything you would not sell to just anyone?"),
 				MIN_REPUTATION, Integer.MAX_VALUE)));
 
-		DialogueRegistry.registerDialogueHandler(OPTION_ID, BookOfferDialogue::sell);
+		// The question shows the book; the emeralds move only on the button
+		// that spends them. The old handler charged on the question itself.
+		DialogueRegistry.registerRichDialogueHandler(OPTION_ID, (villager, player, optionId) ->
+			DialogueRegistry.Reply.of("I have one book I do not put on the shelf. " + PRICE
+					+ " emeralds, and I will want to know what you do with it.")
+				.option("*pay the " + PRICE + " emeralds*", BookOfferDialogue::sell)
+				.walkAway("Keep it shelved for now."));
 	}
 
-	private static Component sell(net.minecraft.world.entity.npc.villager.Villager villager,
+	private static DialogueRegistry.Reply sell(net.minecraft.world.entity.npc.villager.Villager villager,
 			ServerPlayer player, String optionId) {
 		if (countEmeralds(player) < PRICE) {
-			return Component.literal("I have one book I do not put on the shelf. " + PRICE
-				+ " emeralds, and I will want to know what you do with it.");
+			return DialogueRegistry.Reply.of("That is not " + PRICE + " emeralds. The book has waited years. It will wait for you.")
+				.walkAway("*count your pockets*");
 		}
 
 		ItemStack book = enchantedBook(player);
 		if (book == null) {
-			return Component.literal("...I had it here somewhere. Come back.");
+			return DialogueRegistry.Reply.of("...I had it here somewhere. Come back.")
+				.walkAway("I'll come back.");
 		}
 
 		takeEmeralds(player);
@@ -65,9 +72,10 @@ public final class BookOfferDialogue {
 			player.drop(book, false, net.minecraft.util.Prediction.SERVER_ONLY);
 		}
 
-		return Component.literal(
+		return DialogueRegistry.Reply.of(
 			"It is for boots, and it does what you would think, and I would not test it over anything deep. "
-			+ "The table will never give you this one - that is rather the point of it being on my shelf and not yours.");
+			+ "The table will never give you this one - that is rather the point of it being on my shelf and not yours.")
+			.walkAway("Over nothing deep. Understood.");
 	}
 
 	/** Null when the enchantment is not in this world's registry, rather than a crash. */
