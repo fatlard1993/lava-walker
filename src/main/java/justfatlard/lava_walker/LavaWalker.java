@@ -68,6 +68,11 @@ public class LavaWalker implements ModInitializer {
 					world.isUnobstructed(cobblestone, blockPos, CollisionContext.empty())) {
 
 					world.setBlock(blockPos, cobblestone, 3);
+					// One square of a crossing. Whether it was a crossing at all is Awards' to
+					// decide, from how many came before it and how long ago.
+					if (entity instanceof net.minecraft.server.level.ServerPlayer walker) {
+						Awards.stepped(walker);
+					}
 				}
 			}
 		}
