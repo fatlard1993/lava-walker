@@ -5,14 +5,18 @@
 	],
 	"versions": {
 		"2.0.1": [
-			"The enchantment says what it does in its tooltip, its book turns up in librarian trades, and asking a librarian for one shows the book and the price before any emeralds change hands.",
+			"The enchantment says what it does in its tooltip, and its book turns up in librarian trades.",
+			"Asking a librarian shows the book and the price before any emeralds change hands.",
 			"Walking far enough out across a lava lake now earns an advancement."
 		],
 		"2.0.0": [
-			"With village-quests installed, a librarian who trusts you a great deal sells the one book they keep off the shelf, for thirty-two emeralds."
+			"With Village Quests installed, a librarian who trusts you sells the book they keep off the shelf.",
+			"Thirty-two emeralds."
 		],
 		"1.0.0": [
-			"Lava Walker arrives: a treasure enchantment for boots that turns lava sources to cobblestone within two blocks, found in loot rather than at an enchanting table, and unwilling to share boots with Frost Walker or Depth Strider."
+			"Lava Walker: a treasure enchantment for boots, turning lava to cobblestone within two blocks.",
+			"Found in loot rather than at an enchanting table.",
+			"It will not share boots with Frost Walker or Depth Strider."
 		]
 	}
 }
