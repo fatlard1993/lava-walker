@@ -4,6 +4,9 @@
 		"Frost Walker's trick for lava, except the stone it leaves stays."
 	],
 	"versions": {
+		"2.0.3": [
+			"A mod menu icon of boots on lava, to match Rain Walker's."
+		],
 		"2.0.2": [
 			"Walking far enough out across a lava lake now earns an advancement."
 		],
