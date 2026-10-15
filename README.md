@@ -6,7 +6,7 @@ A Fabric mod that adds the **Lava Walker** enchantment.
 
 **Lava Walker** works like Frost Walker, but for lava - walk across lava lakes by turning lava source blocks into cobblestone beneath your feet.
 
-- Enchantment for boots
+- Enchantment for boots, one level only
 - Converts lava source blocks to cobblestone when walking nearby
 - Small 2-block radius for balance
 - Cobblestone is permanent (unlike Frost Walker's ice)
@@ -17,11 +17,7 @@ A Fabric mod that adds the **Lava Walker** enchantment.
 
 Lava Walker is a treasure enchantment: the enchanting table will never give it to you. It comes out of chests, off fishing rods and now and then from a librarian's ordinary book trades, and none of those is a plan.
 
-So with [village-quests](https://github.com/fatlard1993/village-quests) installed, a librarian who trusts you a great deal (60 reputation) will sell the one book they do not put on the shelf, for 32 emeralds. Asking shows the book and its price; the emeralds change hands only when you choose to pay.
-
-A shop rather than a quest, because there is nothing to do: you have emeralds, they have the book, and they have decided you are the sort of person who should have it.
-
-Optional and guarded: without village-quests the mod behaves exactly as before.
+So with [village-quests](https://github.com/fatlard1993/village-quests) installed, a librarian who trusts you a great deal (60 reputation) will sell the one book they do not put on the shelf, for 32 emeralds.
 
 ## Screenshot
 
