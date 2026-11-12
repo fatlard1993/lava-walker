@@ -1,0 +1,32 @@
+{
+  "demo": {
+    "name": "Lava Walker",
+    "icon": "minecraft:diamond_boots",
+    "about": [
+      "An enchantment for boots that does for lava what Frost Walker does for water: it turns the lava under you to cobblestone, for good.",
+      "You're wearing them. Walk out over the lava; the potion is for if you misstep."
+    ]
+  },
+  "pvp_preset": 1,
+  "needs": ["lava-walker"],
+  "preset": {
+    "name": "Lava Walker",
+    "icon": "minecraft:diamond_boots",
+    "pvp": false,
+    "game_mode": "survival",
+    "entry_kit": [
+      {"slot": 36, "item": {"id": "minecraft:diamond_boots", "count": 1, "components": {"minecraft:enchantments": {"lava-walker:lava_walker": 1}}}},
+      {"slot": 0, "item": {"id": "minecraft:potion", "count": 2, "components": {"minecraft:potion_contents": {"potion": "minecraft:fire_resistance"}}}},
+      {"slot": 1, "item": {"id": "minecraft:cooked_beef", "count": 8}}
+    ],
+    "respawn_kit": "entry",
+    "goal": "time",
+    "mobs": "off",
+    "life": 15,
+    "size": 3,
+    "world": "nether",
+    "shape": "natural",
+    "biome": "minecraft:basalt_deltas",
+    "weather": "clear"
+  }
+}
