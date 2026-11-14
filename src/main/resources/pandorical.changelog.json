@@ -4,6 +4,9 @@
 		"Frost Walker's trick for lava, except the stone it leaves stays."
 	],
 	"versions": {
+		"2.0.6": [
+			"A demo to play in PvP Dimensions' onboarding."
+		],
 		"2.0.5": [
 			"Drop changelog notes for changes nothing in the game shows."
 		],
