@@ -32,7 +32,7 @@ public class LivingEntityMixin {
 		BlockPos pos = self.blockPosition();
 		ItemStack boots = self.getItemBySlot(EquipmentSlot.FEET);
 
-		if (boots.isEmpty()) return;
+		if (!boots.isEnchanted()) return;
 		if (pos.equals(lavaWalker$lastPos)) return;
 
 		var enchantmentRegistry = world.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
