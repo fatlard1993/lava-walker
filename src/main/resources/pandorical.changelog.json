@@ -4,6 +4,9 @@
 		"Frost Walker's trick for lava, except the stone it leaves stays."
 	],
 	"versions": {
+		"2.0.8": [
+			"Lava walker comes from the enchanting table too."
+		],
 		"2.0.7": [
 			"Mobs in plain boots no longer have their boots searched for lava walker every tick."
 		],
